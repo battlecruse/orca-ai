@@ -1,0 +1,23 @@
+# Local / runtime
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+
+# Orca / agent local state (never commit secrets)
+.orca/
+.claude/
+.codex/
+.local/
+
+# AppImage downloads (install via scripts)
+*.AppImage
+squashfs-root/
+
+# Node / Python accidental drops
+node_modules/
+__pycache__/
+.venv/
+
+agent-tools/

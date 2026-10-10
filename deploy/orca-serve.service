@@ -1,0 +1,19 @@
+[Unit]
+Description=Orca headless runtime (orca serve)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu
+Environment=LIBGL_ALWAYS_SOFTWARE=1
+# Prefer letting Orca start its own Xvfb when DISPLAY is unset.
+UnsetEnvironment=DISPLAY
+# Change pairing-address to a Tailscale IP / public hostname clients can reach.
+ExecStart=/opt/orca/orca-linux.AppImage --no-sandbox serve --port 6768 --pairing-address 127.0.0.1
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
