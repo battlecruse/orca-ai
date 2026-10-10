@@ -15,6 +15,10 @@
 *.AppImage
 squashfs-root/
 
+# Upstream clone mirrors (install to /opt/orca/src instead)
+vendor/
+agent-tools/
+
 # Node / Python accidental drops
 node_modules/
 __pycache__/

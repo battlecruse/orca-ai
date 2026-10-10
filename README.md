@@ -12,10 +12,10 @@ Orca는 AI 코딩 에이전트(Claude Code, Codex, OpenCode 등)를 git worktree
 | orca-cli/orca | 유사 이름의 Go CLI. 별개 프로젝트로 배제 |
 | Microsoft Orca / 기타 ML “Orca” | 다른 제품군 |
 
-## 빠른 시작 (Linux / 이 클라우드 VM)
+## 빠른 시작 (Linux / 이 클라우드 VM) — GitHub에서 설치
 
 ```bash
-# 1) 의존성 + AppImage 설치
+# 1) GitHub 소스 clone + GitHub Releases AppImage
 ./scripts/install-orca-linux.sh
 
 # 2) 헤드리스 런타임 기동 (포트 6768)
@@ -25,29 +25,49 @@ Orca는 AI 코딩 에이전트(Claude Code, Codex, OpenCode 등)를 git worktree
 orca status
 ```
 
-설치 위치:
+`install-orca-linux.sh`가 하는 일:
 
-- AppImage: `/opt/orca/orca-linux.AppImage`
-- CLI 래퍼: `/usr/local/bin/orca`, `/usr/local/bin/orca-ide`
-- 검증된 버전 예시: **v1.4.224**
+1. `git clone https://github.com/stablyai/orca.git` → `/opt/orca/src`
+2. GitHub Releases API로 `orca-linux.AppImage` 다운로드 → `/opt/orca/orca-linux.AppImage`
+3. CLI 래퍼 설치 → `/usr/local/bin/orca`, `orca-ide`
+
+설치 위치 / 검증값:
+
+- Upstream clone: `/opt/orca/src` (예: `bbe9a114…`)
+- AppImage: `/opt/orca/orca-linux.AppImage` — **v1.4.224**
+- CLI: `/usr/local/bin/orca`, `/usr/local/bin/orca-ide`
 
 공식 문서: [Install](https://www.onorca.dev/docs/install) · [Remote / orca serve](https://www.onorca.dev/docs/remote-servers) · [GitHub reviews](https://www.onorca.dev/docs/review/github)
 
-## GitHub에 “탑재”하는 방법
+## GitHub에 “탑재”하는 방법 (계정: battlecruse)
 
 Orca 자체는 SaaS에 올리는 앱이 아니라 **로컬/서버 런타임**입니다. GitHub 쪽 탑재는 아래 두 층으로 나뉩니다.
 
-### A. 이 운영 저장소를 GitHub에 올리기
+### A. 이 운영 저장소를 `battlecruse/orca-ai`에 올리기
 
-1. GitHub에서 새 저장소 생성 (빈 README 없이).
-2. 원격 추가 후 push:
+권장 저장소명: **`battlecruse/orca-ai`**. 브랜치: `cursor/orca-ai-github-setup-87b8`.
+
+이 VM에 `gh`가 로그인되어 있으면:
 
 ```bash
-git remote add github https://github.com/<OWNER>/<REPO>.git
-git push -u github main
+./scripts/push-to-battlecruse.sh
 ```
 
-3. (선택) Actions는 아직 최소 스캐폴드만 포함합니다. 필요하면 `.github/workflows/`를 추가하세요.
+아직 로그인되어 있지 않으면 (현재 클라우드 에이전트 상태):
+
+```bash
+# 브라우저에서 github.com에 로그인한 세션은 이 VM으로 전달되지 않습니다.
+gh auth login -h github.com   # battlecruse로 인증
+./scripts/push-to-battlecruse.sh
+```
+
+또는 GitHub 웹에서 빈 repo `orca-ai`를 만든 뒤:
+
+```bash
+git remote add github https://github.com/battlecruse/orca-ai.git
+git push -u github cursor/orca-ai-github-setup-87b8
+# 웹에서 draft PR: cursor/orca-ai-github-setup-87b8 → main
+```
 
 ### B. Orca 앱 ↔ GitHub 연동 (PR/이슈/Actions)
 
